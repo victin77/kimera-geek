@@ -63,10 +63,10 @@ export function Header() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
+      className={`fixed inset-x-0 top-0 z-50 transform-gpu transition-all duration-300 ${
         scrolled
-          ? 'border-b-[3px] border-kimera-ink bg-kimera-cream/95 shadow-comic-sm backdrop-blur'
-          : 'border-b-[3px] border-transparent bg-kimera-cream/80 backdrop-blur-sm'
+          ? 'border-b-[3px] border-kimera-ink bg-kimera-cream shadow-comic-sm'
+          : 'border-b-[3px] border-transparent bg-kimera-cream'
       }`}
     >
       <div className="section-container flex h-20 items-center justify-between gap-3 lg:h-24">
