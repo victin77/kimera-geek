@@ -23,6 +23,10 @@ export interface Product {
   art: ArtKind
   /** cor de destaque (hex) usada na ilustração e no card */
   accent: string
+  /** foto real do produto (vinda da API); se ausente, usa a arte SVG */
+  image?: string
+  /** destaque na home */
+  featured?: boolean
 }
 
 export interface Category {

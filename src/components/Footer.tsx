@@ -1,8 +1,9 @@
 import { Instagram, MessageCircle, MapPin, Clock, Heart } from 'lucide-react'
 import { NAV_LINKS, STORE, whatsappLink } from '../lib/constants'
-import { categories } from '../data/categories'
+import { useData } from '../context/DataContext'
 
 export function Footer() {
+  const { categories } = useData()
   const year = new Date().getFullYear()
   return (
     <footer id="contato" className="bg-kimera-ink text-kimera-cream">

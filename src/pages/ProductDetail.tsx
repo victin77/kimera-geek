@@ -18,8 +18,9 @@ import { Footer } from '../components/Footer'
 import { WhatsAppFab } from '../components/WhatsAppFab'
 import { ProductArt } from '../components/ProductArt'
 import { ProductCard } from '../components/ProductCard'
-import { products, getProductById, formatPrice } from '../data/products'
+import { formatPrice } from '../data/products'
 import { useStore } from '../context/StoreContext'
+import { useData } from '../context/DataContext'
 import { useRouter } from '../router'
 import { whatsappLink, STORE } from '../lib/constants'
 import type { Product, ProductBadge } from '../data/types'
@@ -39,9 +40,21 @@ function describe(p: Product): string {
 export function ProductDetail({ id }: { id: string }) {
   const { navigate } = useRouter()
   const { addToCart, toggleFavorite, isFavorite } = useStore()
+  const { products, getProductById, loading } = useData()
   const product = getProductById(id)
   const [qty, setQty] = useState(1)
   const [added, setAdded] = useState(false)
+
+  // ainda carregando os produtos da API: evita "não encontrado" prematuro
+  if (!product && loading) {
+    return (
+      <div className="min-h-screen bg-kimera-cream">
+        <Header />
+        <div className="section-container py-32 text-center text-kimera-ink/50">Carregando…</div>
+        <Footer />
+      </div>
+    )
+  }
 
   if (!product) {
     return (
@@ -93,7 +106,11 @@ export function ProductDetail({ id }: { id: string }) {
             style={{ backgroundColor: `${product.accent}22` }}
           >
             <div className="absolute inset-0 bg-halftone bg-dots opacity-30" />
-            <ProductArt kind={product.art} accent={product.accent} className="relative h-full w-full p-6" />
+            {product.image ? (
+              <img src={product.image} alt={product.name} className="relative h-full w-full object-cover" />
+            ) : (
+              <ProductArt kind={product.art} accent={product.accent} className="relative h-full w-full p-6" />
+            )}
             {product.badge && (
               <span className={`comic-tag absolute left-4 top-4 ${badgeStyles[product.badge]}`}>
                 {product.badge}

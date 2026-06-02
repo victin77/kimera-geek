@@ -16,6 +16,7 @@ import { Catalog } from './pages/Catalog'
 import { ProductDetail } from './pages/ProductDetail'
 import { NotFound } from './pages/NotFound'
 import { StoreProvider } from './context/StoreContext'
+import { DataProvider } from './context/DataContext'
 import { ScrollTopButton } from './components/ScrollTopButton'
 import { RouterProvider, useRouter } from './router'
 
@@ -66,10 +67,12 @@ function Routes() {
 export default function App() {
   return (
     <RouterProvider>
-      <StoreProvider>
-        <Routes />
-        <ScrollTopButton />
-      </StoreProvider>
+      <DataProvider>
+        <StoreProvider>
+          <Routes />
+          <ScrollTopButton />
+        </StoreProvider>
+      </DataProvider>
     </RouterProvider>
   )
 }

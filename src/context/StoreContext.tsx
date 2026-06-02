@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import type { ReactNode } from 'react'
-import { getProductById } from '../data/products'
+import { useData } from './DataContext'
 
 const FAV_KEY = 'kimera.favorites'
 const CART_KEY = 'kimera.cart'
@@ -38,6 +38,7 @@ function load<T>(key: string, fallback: T): T {
 }
 
 export function StoreProvider({ children }: { children: ReactNode }) {
+  const { getProductById } = useData()
   const [favorites, setFavorites] = useState<string[]>(() => load(FAV_KEY, []))
   const [cart, setCart] = useState<CartItem[]>(() => load(CART_KEY, []))
 
@@ -84,7 +85,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         ),
       clearCart: () => setCart([]),
     }
-  }, [favorites, cart])
+  }, [favorites, cart, getProductById])
 
   return <StoreContext.Provider value={value}>{children}</StoreContext.Provider>
 }

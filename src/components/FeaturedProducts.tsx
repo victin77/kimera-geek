@@ -1,13 +1,16 @@
 import { motion } from 'framer-motion'
 import { LayoutGrid } from 'lucide-react'
-import { products } from '../data/products'
 import { ProductCard } from './ProductCard'
 import { SectionHeading } from './SectionHeading'
 import { useRouter } from '../router'
+import { useData } from '../context/DataContext'
 
 export function FeaturedProducts() {
   const { navigate } = useRouter()
-  const featured = products.slice(0, 8)
+  const { products } = useData()
+  // prioriza os marcados como destaque; se não houver, mostra os primeiros
+  const highlighted = products.filter((p) => p.featured)
+  const featured = (highlighted.length ? highlighted : products).slice(0, 8)
 
   return (
     <section id="produtos" className="relative bg-kimera-yellow py-16 lg:py-24">

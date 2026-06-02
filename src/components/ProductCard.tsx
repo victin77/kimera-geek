@@ -46,11 +46,20 @@ export function ProductCard({ product }: { product: Product }) {
         className="relative aspect-square cursor-pointer overflow-hidden border-b-[3px] border-kimera-ink"
         style={{ backgroundColor: `${product.accent}22` }}
       >
-        <ProductArt
-          kind={product.art}
-          accent={product.accent}
-          className="h-full w-full transition-transform duration-300 group-hover:scale-105"
-        />
+        {product.image ? (
+          <img
+            src={product.image}
+            alt={product.name}
+            loading="lazy"
+            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+          />
+        ) : (
+          <ProductArt
+            kind={product.art}
+            accent={product.accent}
+            className="h-full w-full transition-transform duration-300 group-hover:scale-105"
+          />
+        )}
 
         {product.badge && (
           <span

@@ -2,10 +2,12 @@ import { Heart, ShoppingBag, Trash2 } from 'lucide-react'
 import { Drawer } from './Drawer'
 import { ProductArt } from './ProductArt'
 import { useStore } from '../context/StoreContext'
-import { getProductById, formatPrice } from '../data/products'
+import { useData } from '../context/DataContext'
+import { formatPrice } from '../data/products'
 
 export function FavoritesDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { favorites, favoriteCount, toggleFavorite, addToCart } = useStore()
+  const { getProductById } = useData()
 
   const items = favorites
     .map((id) => getProductById(id))

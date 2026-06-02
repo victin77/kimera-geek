@@ -2,11 +2,13 @@ import { ShoppingBag, Plus, Minus, Trash2, MessageCircle } from 'lucide-react'
 import { Drawer } from './Drawer'
 import { ProductArt } from './ProductArt'
 import { useStore } from '../context/StoreContext'
-import { getProductById, formatPrice } from '../data/products'
+import { useData } from '../context/DataContext'
+import { formatPrice } from '../data/products'
 import { whatsappLink } from '../lib/constants'
 
 export function CartDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { cart, cartCount, cartTotal, setQty, removeFromCart, clearCart } = useStore()
+  const { getProductById } = useData()
 
   const items = cart
     .map((c) => ({ item: c, product: getProductById(c.id) }))

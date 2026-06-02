@@ -5,8 +5,8 @@ import { Header } from '../components/Header'
 import { Footer } from '../components/Footer'
 import { WhatsAppFab } from '../components/WhatsAppFab'
 import { ProductCard } from '../components/ProductCard'
-import { products, productCategories } from '../data/products'
 import { useRouter } from '../router'
+import { useData } from '../context/DataContext'
 
 const PAGE_SIZE = 8
 
@@ -26,6 +26,7 @@ const priceRanges: PriceRange[] = [
 
 export function Catalog() {
   const { navigate } = useRouter()
+  const { products, productCategories } = useData()
 
   // categoria inicial vinda da URL (?cat=...) — ex.: cards de categoria da home
   const initialCategory = (() => {

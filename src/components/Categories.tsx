@@ -1,8 +1,9 @@
-import { categories } from '../data/categories'
 import { CategoryCard } from './CategoryCard'
 import { SectionHeading } from './SectionHeading'
+import { useData } from '../context/DataContext'
 
 export function Categories() {
+  const { categories } = useData()
   return (
     <section id="categorias" className="relative bg-kimera-cream py-16 lg:py-24">
       <div className="section-container">

@@ -2,8 +2,9 @@ import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Search, X, ShoppingBag } from 'lucide-react'
 import { ProductArt } from './ProductArt'
-import { searchProducts, formatPrice } from '../data/products'
+import { formatPrice } from '../data/products'
 import { useStore } from '../context/StoreContext'
+import { useData } from '../context/DataContext'
 
 interface Props {
   open: boolean
@@ -15,6 +16,7 @@ export function SearchPanel({ open, onClose }: Props) {
   const [query, setQuery] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
   const { addToCart } = useStore()
+  const { searchProducts } = useData()
 
   const results = searchProducts(query)
 
