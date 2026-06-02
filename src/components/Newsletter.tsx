@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Mail, Check, Zap } from 'lucide-react'
+import { whatsappLink } from '../lib/constants'
 
 export function Newsletter() {
   const [email, setEmail] = useState('')
@@ -9,10 +10,12 @@ export function Newsletter() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (!email) return
-    // Protótipo: apenas feedback visual. Integrar com serviço real depois.
+    // Abre o WhatsApp da loja com o e-mail já preenchido — a Kimera salva o contato.
+    const msg = `Olá, Kimera Geek! 🚀 Quero receber as novidades e promoções. Meu e-mail para a newsletter é: ${email}`
+    window.open(whatsappLink(msg), '_blank', 'noopener,noreferrer')
     setSent(true)
     setEmail('')
-    setTimeout(() => setSent(false), 4000)
+    setTimeout(() => setSent(false), 5000)
   }
 
   return (
@@ -65,7 +68,7 @@ export function Newsletter() {
                 exit={{ opacity: 0 }}
                 className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-kimera-purple"
               >
-                <Check size={16} /> Inscrição recebida! Em breve novidades no seu e-mail.
+                <Check size={16} /> Abrimos o WhatsApp! É só enviar a mensagem pra confirmar. 💬
               </motion.p>
             )}
           </AnimatePresence>
