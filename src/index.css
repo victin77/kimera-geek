@@ -1,0 +1,101 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    overflow-x: clip;
+  }
+
+  /* Reserva o espaço da barra de rolagem só em telas com mouse (desktop),
+     pra evitar o "pulo" ao travar o scroll. No mobile a barra é overlay
+     (não some espaço), então NÃO reservamos — senão sobra uma faixa branca. */
+  @media (pointer: fine) {
+    html {
+      scrollbar-gutter: stable;
+    }
+  }
+
+  /* evita qualquer rolagem horizontal acidental (clip não cria container de scroll) */
+  body,
+  #root {
+    overflow-x: clip;
+    max-width: 100%;
+  }
+
+  /* compensa o header fixo ao rolar até as seções (âncoras do menu) */
+  section[id],
+  footer[id] {
+    scroll-margin-top: 6rem;
+  }
+
+  body {
+    @apply bg-kimera-cream text-kimera-ink font-sans antialiased;
+    /* fundo externo amarelo-laranja com textura halftone discreta */
+    background-color: #FFFDF7;
+  }
+
+  /* Títulos display: leve inclinação estilo HQ */
+  .font-display {
+    letter-spacing: 0.5px;
+  }
+
+  ::selection {
+    background-color: #FACC15;
+    color: #111111;
+  }
+}
+
+@layer components {
+  /* Container padrão das seções */
+  .section-container {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Heading display inclinado com contorno tipo HQ */
+  .heading-comic {
+    @apply font-display uppercase leading-[0.95] -skew-x-3;
+  }
+
+  /* Borda + sombra dura estilo comic */
+  .comic-border {
+    @apply border-[3px] border-kimera-ink shadow-comic;
+  }
+
+  /* Botão base estilo comic */
+  .btn-comic {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border-[3px]
+      border-kimera-ink px-6 py-3 font-extrabold uppercase tracking-wide
+      shadow-comic transition-all duration-150
+      hover:-translate-y-0.5 hover:shadow-comic-lg
+      active:translate-x-1 active:translate-y-1 active:shadow-comic-sm;
+  }
+
+  /* Etiqueta / tag de quadrinho */
+  .comic-tag {
+    @apply inline-flex items-center gap-1 rounded-md border-2 border-kimera-ink
+      px-2.5 py-1 text-xs font-extrabold uppercase tracking-wider shadow-comic-sm;
+  }
+}
+
+@layer utilities {
+  /* Contorno de texto estilo HQ (para títulos brancos sobre cor) */
+  .text-stroke-ink {
+    -webkit-text-stroke: 2px #111111;
+    paint-order: stroke fill;
+  }
+  .text-stroke-ink-lg {
+    -webkit-text-stroke: 3px #111111;
+    paint-order: stroke fill;
+  }
+
+  /* esconde scrollbar mantendo scroll */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
