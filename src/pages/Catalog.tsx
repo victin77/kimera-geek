@@ -5,6 +5,7 @@ import { Header } from '../components/Header'
 import { Footer } from '../components/Footer'
 import { WhatsAppFab } from '../components/WhatsAppFab'
 import { ProductCard } from '../components/ProductCard'
+import { ProductCardSkeleton } from '../components/ProductCardSkeleton'
 import { useRouter } from '../router'
 import { useData } from '../context/DataContext'
 
@@ -26,7 +27,7 @@ const priceRanges: PriceRange[] = [
 
 export function Catalog() {
   const { navigate } = useRouter()
-  const { products, productCategories } = useData()
+  const { products, productCategories, loading } = useData()
 
   // categoria inicial vinda da URL (?cat=...) — ex.: cards de categoria da home
   const initialCategory = (() => {
@@ -165,10 +166,16 @@ export function Catalog() {
         {/* contagem + limpar */}
         <div className="mt-6 flex items-center justify-between gap-3">
           <p className="text-sm font-bold text-kimera-ink/70">
-            {filtered.length} produto{filtered.length !== 1 ? 's' : ''} encontrado
-            {filtered.length !== 1 ? 's' : ''}
+            {loading ? (
+              'Carregando produtos…'
+            ) : (
+              <>
+                {filtered.length} produto{filtered.length !== 1 ? 's' : ''} encontrado
+                {filtered.length !== 1 ? 's' : ''}
+              </>
+            )}
           </p>
-          {hasFilters && (
+          {!loading && hasFilters && (
             <button
               type="button"
               onClick={clearFilters}
@@ -181,7 +188,13 @@ export function Catalog() {
         </div>
 
         {/* grade */}
-        {pageItems.length === 0 ? (
+        {loading ? (
+          <div className="mt-6 grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-4">
+            {Array.from({ length: PAGE_SIZE }).map((_, i) => (
+              <ProductCardSkeleton key={i} />
+            ))}
+          </div>
+        ) : pageItems.length === 0 ? (
           <div className="mt-10 flex flex-col items-center gap-3 rounded-2xl border-[3px] border-dashed border-kimera-ink/40 bg-white/60 py-16 text-center">
             <PackageSearch size={40} className="text-kimera-ink/40" />
             <p className="font-extrabold text-kimera-ink">Nada encontrado com esses filtros</p>

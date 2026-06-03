@@ -20,24 +20,30 @@ interface DataValue {
 const DataContext = createContext<DataValue | null>(null)
 
 export function DataProvider({ children }: { children: ReactNode }) {
-  // começa com os dados estáticos (render instantâneo, nunca vazio)
-  const [products, setProducts] = useState<Product[]>(staticProducts)
-  const [categories, setCategories] = useState<Category[]>(staticCategories)
+  // começa vazio: a API é a fonte da verdade. Os dados estáticos só entram
+  // como fallback se a API estiver fora do ar — assim os produtos de exemplo
+  // nunca "piscam" na tela antes dos reais carregarem.
+  const [products, setProducts] = useState<Product[]>([])
+  const [categories, setCategories] = useState<Category[]>([])
   const [loading, setLoading] = useState(true)
-  const [source, setSource] = useState<'api' | 'fallback'>('fallback')
+  const [source, setSource] = useState<'api' | 'fallback'>('api')
 
   useEffect(() => {
     let alive = true
     Promise.all([apiProducts(), apiCategories()])
       .then(([ps, cs]) => {
         if (!alive) return
-        // só troca se a API devolveu algo (senão mantém o fallback)
-        if (Array.isArray(cs) && cs.length) setCategories(cs.map(adaptCategory))
-        if (Array.isArray(ps)) setProducts(ps.map(adaptProduct))
+        // API respondeu: ela é a fonte da verdade (mesmo que venha vazia).
+        setCategories(Array.isArray(cs) && cs.length ? cs.map(adaptCategory) : staticCategories)
+        setProducts(Array.isArray(ps) ? ps.map(adaptProduct) : [])
         setSource('api')
       })
       .catch(() => {
-        /* API fora do ar: mantém os dados estáticos */
+        // API fora do ar: aí sim cai pros dados estáticos pra não ficar vazio.
+        if (!alive) return
+        setProducts(staticProducts)
+        setCategories(staticCategories)
+        setSource('fallback')
       })
       .finally(() => {
         if (alive) setLoading(false)

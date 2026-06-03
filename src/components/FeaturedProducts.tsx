@@ -1,13 +1,14 @@
 import { motion } from 'framer-motion'
 import { LayoutGrid } from 'lucide-react'
 import { ProductCard } from './ProductCard'
+import { ProductCardSkeleton } from './ProductCardSkeleton'
 import { SectionHeading } from './SectionHeading'
 import { useRouter } from '../router'
 import { useData } from '../context/DataContext'
 
 export function FeaturedProducts() {
   const { navigate } = useRouter()
-  const { products } = useData()
+  const { products, loading } = useData()
   // prioriza os marcados como destaque; se não houver, mostra os primeiros
   const highlighted = products.filter((p) => p.featured)
   const featured = (highlighted.length ? highlighted : products).slice(0, 8)
@@ -29,9 +30,9 @@ export function FeaturedProducts() {
         />
 
         <div className="mt-12 grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-4">
-          {featured.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
+          {loading
+            ? Array.from({ length: 8 }).map((_, i) => <ProductCardSkeleton key={i} />)
+            : featured.map((product) => <ProductCard key={product.id} product={product} />)}
         </div>
 
         <motion.div
