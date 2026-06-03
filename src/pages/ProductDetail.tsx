@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import {
   ArrowLeft,
   Heart,
@@ -43,6 +43,8 @@ export function ProductDetail({ id }: { id: string }) {
   const product = getProductById(id)
   const [qty, setQty] = useState(1)
   const [added, setAdded] = useState(false)
+  const [activeImg, setActiveImg] = useState(0)
+  const trackRef = useRef<HTMLDivElement>(null)
 
   // ainda carregando os produtos da API: evita "não encontrado" prematuro
   if (!product && loading) {
@@ -74,6 +76,21 @@ export function ProductDetail({ id }: { id: string }) {
   const fav = isFavorite(product.id)
   const related = products.filter((p) => p.category === product.category && p.id !== product.id).slice(0, 4)
 
+  // fotos do produto (carrossel): usa todas as imagens; se não houver, cai na arte
+  const gallery = product.images && product.images.length > 0
+    ? product.images
+    : product.image
+      ? [product.image]
+      : []
+
+  function scrollToImg(i: number) {
+    trackRef.current?.scrollTo({ left: i * trackRef.current.clientWidth, behavior: 'smooth' })
+  }
+  function onGalleryScroll() {
+    const el = trackRef.current
+    if (el) setActiveImg(Math.round(el.scrollLeft / el.clientWidth))
+  }
+
   const handleAdd = () => {
     addToCart(product.id, qty)
     setAdded(true)
@@ -96,21 +113,74 @@ export function ProductDetail({ id }: { id: string }) {
         </button>
 
         <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
-          {/* imagem */}
-          <div
-            className="relative aspect-square overflow-hidden rounded-3xl border-[3px] border-kimera-ink shadow-comic-lg"
-            style={{ backgroundColor: `${product.accent}22` }}
-          >
-            <div className="absolute inset-0 bg-halftone bg-dots opacity-30" />
-            {product.image ? (
-              <img src={product.image} alt={product.name} className="relative h-full w-full object-cover" />
-            ) : (
-              <ProductArt kind={product.art} accent={product.accent} className="relative h-full w-full p-6" />
-            )}
-            {product.badge && (
-              <span className={`comic-tag absolute left-4 top-4 ${badgeStyles[product.badge]}`}>
-                {product.badge}
-              </span>
+          {/* imagem / carrossel */}
+          <div>
+            <div
+              className="relative aspect-square overflow-hidden rounded-3xl border-[3px] border-kimera-ink shadow-comic-lg"
+              style={{ backgroundColor: `${product.accent}22` }}
+            >
+              <div className="absolute inset-0 bg-halftone bg-dots opacity-30" />
+
+              {gallery.length > 0 ? (
+                <div
+                  ref={trackRef}
+                  onScroll={onGalleryScroll}
+                  className="no-scrollbar relative flex h-full w-full snap-x snap-mandatory overflow-x-auto"
+                >
+                  {gallery.map((src, i) => (
+                    <img
+                      key={i}
+                      src={src}
+                      alt={`${product.name} — foto ${i + 1}`}
+                      className="h-full w-full shrink-0 snap-center object-cover"
+                    />
+                  ))}
+                </div>
+              ) : (
+                <ProductArt kind={product.art} accent={product.accent} className="relative h-full w-full p-6" />
+              )}
+
+              {product.badge && (
+                <span className={`comic-tag absolute left-4 top-4 ${badgeStyles[product.badge]}`}>
+                  {product.badge}
+                </span>
+              )}
+
+              {/* bolinhas indicadoras */}
+              {gallery.length > 1 && (
+                <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 gap-1.5">
+                  {gallery.map((_, i) => (
+                    <button
+                      key={i}
+                      type="button"
+                      onClick={() => scrollToImg(i)}
+                      aria-label={`Ver foto ${i + 1}`}
+                      className={`h-2 rounded-full border-2 border-kimera-ink transition-all ${
+                        activeImg === i ? 'w-5 bg-kimera-yellow' : 'w-2 bg-white'
+                      }`}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* miniaturas (desktop/quando há várias) */}
+            {gallery.length > 1 && (
+              <div className="no-scrollbar mt-3 flex gap-2 overflow-x-auto">
+                {gallery.map((src, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    onClick={() => scrollToImg(i)}
+                    aria-label={`Ver foto ${i + 1}`}
+                    className={`h-16 w-16 shrink-0 overflow-hidden rounded-lg border-2 transition-all ${
+                      activeImg === i ? 'border-kimera-ink ring-2 ring-kimera-yellow' : 'border-neutral-300'
+                    }`}
+                  >
+                    <img src={src} alt="" className="h-full w-full object-cover" />
+                  </button>
+                ))}
+              </div>
             )}
           </div>
 

@@ -25,6 +25,8 @@ export interface Product {
   accent: string
   /** foto real do produto (vinda da API); se ausente, usa a arte SVG */
   image?: string
+  /** todas as fotos do produto (vindas da API), para o carrossel na página do produto */
+  images?: string[]
   /** destaque na home */
   featured?: boolean
 }

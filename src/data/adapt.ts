@@ -46,6 +46,7 @@ export function adaptProduct(p: ApiProduct): Product {
     art: artFor(p.category?.slug),
     accent: p.accent,
     image: p.images?.[0],
+    images: p.images ?? [],
     featured: p.featured,
   }
 }
