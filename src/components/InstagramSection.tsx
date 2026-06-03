@@ -1,23 +1,76 @@
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Instagram, Heart, Sparkles } from 'lucide-react'
+import { Instagram, Sparkles } from 'lucide-react'
 import { SectionHeading } from './SectionHeading'
-import { ProductArt } from './ProductArt'
 import { STORE } from '../lib/constants'
-import type { ArtKind } from '../data/types'
 
-// posts fictícios do feed
-const posts: { art: ArtKind; accent: string; tag: string }[] = [
-  { art: 'figure', accent: '#F97316', tag: 'Chegou!' },
-  { art: 'manga', accent: '#7C3AED', tag: 'Box novo' },
-  { art: 'mug', accent: '#FACC15', tag: 'Presente' },
-  { art: 'plush', accent: '#EF4444', tag: 'Fofura' },
-  { art: 'lamp', accent: '#111111', tag: 'Setup' },
-  { art: 'keychain', accent: '#F97316', tag: 'Detalhe' },
+// Fotos reais do Instagram (em public/instagram/)
+const IMAGES = [
+  '/instagram/chegou.jpg',
+  '/instagram/boxnovo.jpg',
+  '/instagram/presente.jpg',
+  '/instagram/fofo.jpg',
+  '/instagram/setup.jpg',
+  '/instagram/detalhe.jpg',
 ]
+
+/** Anel 3D giratório: as fotos ficam num cilindro que gira sozinho, parando em cada uma. */
+function Ring3D({ images }: { images: string[] }) {
+  const [angle, setAngle] = useState(0)
+  const [big, setBig] = useState(false)
+
+  // tamanho/raio responsivos (sm+ = maior)
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 640px)')
+    const update = () => setBig(mq.matches)
+    update()
+    mq.addEventListener('change', update)
+    return () => mq.removeEventListener('change', update)
+  }, [])
+
+  // gira sozinho, snapando em cada foto
+  useEffect(() => {
+    const step = 360 / images.length
+    const t = setInterval(() => setAngle((a) => a - step), 2400)
+    return () => clearInterval(t)
+  }, [images.length])
+
+  const step = 360 / images.length
+  const size = big ? 300 : 196
+  const radius = big ? 360 : 235
+
+  return (
+    <div className="relative h-80 [perspective:2000px] sm:h-[26rem]">
+      <div
+        className="absolute left-1/2 top-1/2 [transform-style:preserve-3d] transition-transform duration-1000 ease-out"
+        style={{
+          width: size,
+          height: size,
+          transform: `translate(-50%, -50%) rotateY(${angle}deg)`,
+        }}
+      >
+        {images.map((src, i) => (
+          <img
+            key={i}
+            src={src}
+            alt={`Kimera Geek no Instagram ${i + 1}`}
+            loading="lazy"
+            className="absolute inset-0 rounded-2xl border-[3px] border-kimera-ink object-cover shadow-comic [backface-visibility:hidden]"
+            style={{
+              width: size,
+              height: size,
+              transform: `rotateY(${step * i}deg) translateZ(${radius}px)`,
+            }}
+          />
+        ))}
+      </div>
+    </div>
+  )
+}
 
 export function InstagramSection() {
   return (
-    <section className="bg-kimera-ink py-16 lg:py-24">
+    <section className="overflow-hidden bg-kimera-ink py-16 lg:py-24">
       <div className="section-container">
         <SectionHeading
           tone="cream"
@@ -30,31 +83,8 @@ export function InstagramSection() {
           subtitle="Novidades, lançamentos e produtos incríveis chegando primeiro no nosso Instagram."
         />
 
-        <div className="mx-auto mt-12 grid max-w-4xl grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
-          {posts.map((p, i) => (
-            <motion.a
-              key={i}
-              href={STORE.instagram}
-              target="_blank"
-              rel="noopener noreferrer"
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true, margin: '-40px' }}
-              transition={{ duration: 0.35, delay: i * 0.06 }}
-              whileHover={{ y: -6 }}
-              whileTap={{ scale: 0.96 }}
-              className="group relative aspect-square overflow-hidden rounded-2xl border-[3px] border-kimera-ink bg-white shadow-comic"
-              style={{ backgroundColor: `${p.accent}22` }}
-            >
-              <ProductArt kind={p.art} accent={p.accent} className="h-full w-full transition-transform duration-300 group-hover:scale-105" />
-              <span className="comic-tag absolute left-2 top-2 bg-kimera-cream text-kimera-ink">
-                {p.tag}
-              </span>
-              <div className="absolute inset-0 grid place-items-center bg-kimera-ink/0 opacity-0 transition-all duration-300 group-hover:bg-kimera-ink/50 group-hover:opacity-100">
-                <Heart size={32} className="fill-white text-white" />
-              </div>
-            </motion.a>
-          ))}
+        <div className="mt-8 sm:mt-12">
+          <Ring3D images={IMAGES} />
         </div>
 
         <motion.div

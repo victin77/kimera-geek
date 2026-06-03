@@ -12,6 +12,7 @@ import { Footer } from './components/Footer'
 import { WhatsAppFab } from './components/WhatsAppFab'
 import { Preview } from './pages/Preview'
 import { HoverPreview } from './pages/HoverPreview'
+import { CarouselPreview } from './pages/CarouselPreview'
 import { Catalog } from './pages/Catalog'
 import { ProductDetail } from './pages/ProductDetail'
 import { NotFound } from './pages/NotFound'
@@ -49,6 +50,7 @@ function Routes() {
   if (import.meta.env.DEV) {
     if (clean === '/preview' || window.location.search.includes('preview')) return <Preview />
     if (clean === '/preview-hover') return <HoverPreview />
+    if (clean === '/preview-carousel') return <CarouselPreview />
   }
 
   if (clean === '/catalogo') return <Catalog />

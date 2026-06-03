@@ -1,0 +1,26 @@
+COMO COLOCAR AS FOTOS DO INSTAGRAM NA SEÇÃO "COMUNIDADE" DO SITE
+=================================================================
+
+1. Escolha 6 fotos do Instagram da Kimera Geek.
+
+2. Renomeie elas exatamente assim e coloque NESTA pasta:
+      1.jpg
+      2.jpg
+      3.jpg
+      4.jpg
+      5.jpg
+      6.jpg
+
+   (pode ser .jpg mesmo — é o formato que sai do Instagram)
+
+3. Dica: use fotos QUADRADAS (ou que fiquem boas cortadas em quadrado),
+   porque a seção mostra cada uma num quadradinho.
+
+4. Pronto! Assim que as fotos estiverem aqui e o site for publicado,
+   elas aparecem no lugar das ilustrações.
+
+Observações:
+- Se faltar alguma (ex.: só colocar 1.jpg a 4.jpg), as que faltarem
+  continuam mostrando a ilustração de fallback — nada quebra.
+- Os "selos" (Chegou!, Box novo, etc.) e os links podem ser ajustados
+  no arquivo src/components/InstagramSection.tsx (é só pedir pro Claude).
