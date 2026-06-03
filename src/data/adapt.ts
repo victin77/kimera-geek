@@ -47,6 +47,7 @@ export function adaptProduct(p: ApiProduct): Product {
     accent: p.accent,
     image: p.images?.[0],
     images: p.images ?? [],
+    stock: p.stock,
     featured: p.featured,
   }
 }

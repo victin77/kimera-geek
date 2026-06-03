@@ -213,6 +213,25 @@ export function ProductDetail({ id }: { id: string }) {
               )}
             </div>
 
+            {typeof product.stock === 'number' && (
+              <p
+                className={`mt-3 inline-flex w-fit items-center gap-1.5 rounded-lg border-2 px-2.5 py-1 text-sm font-bold ${
+                  product.stock === 0
+                    ? 'border-kimera-red/40 text-kimera-red'
+                    : product.stock <= 5
+                      ? 'border-kimera-orange/50 text-kimera-orange'
+                      : 'border-green-600/40 text-green-700'
+                }`}
+              >
+                <span className={`h-2 w-2 rounded-full ${product.stock === 0 ? 'bg-kimera-red' : product.stock <= 5 ? 'bg-kimera-orange' : 'bg-green-600'}`} />
+                {product.stock === 0
+                  ? 'Esgotado no momento'
+                  : product.stock <= 5
+                    ? `Últimas ${product.stock} unidades!`
+                    : `${product.stock} em estoque`}
+              </p>
+            )}
+
             <p className="mt-5 text-base font-medium leading-relaxed text-kimera-ink/70">
               {describe(product)}
             </p>
@@ -232,7 +251,7 @@ export function ProductDetail({ id }: { id: string }) {
                 <button
                   type="button"
                   aria-label="Aumentar"
-                  onClick={() => setQty((q) => q + 1)}
+                  onClick={() => setQty((q) => Math.min(product.stock ?? Infinity, q + 1))}
                   className="grid h-9 w-9 place-items-center rounded-lg transition-colors hover:bg-kimera-yellow/50"
                 >
                   <Plus size={16} />
@@ -242,9 +261,14 @@ export function ProductDetail({ id }: { id: string }) {
               <button
                 type="button"
                 onClick={handleAdd}
-                className={`btn-comic flex-1 text-sm ${added ? 'bg-kimera-purple text-white' : 'bg-kimera-yellow text-kimera-ink'}`}
+                disabled={product.stock === 0}
+                className={`btn-comic flex-1 text-sm disabled:cursor-not-allowed disabled:opacity-50 ${added ? 'bg-kimera-purple text-white' : 'bg-kimera-yellow text-kimera-ink'}`}
               >
-                {added ? <><Check size={18} /> Adicionado!</> : <><ShoppingBag size={18} /> Adicionar ao carrinho</>}
+                {product.stock === 0
+                  ? 'Esgotado'
+                  : added
+                    ? <><Check size={18} /> Adicionado!</>
+                    : <><ShoppingBag size={18} /> Adicionar ao carrinho</>}
               </button>
 
               <button

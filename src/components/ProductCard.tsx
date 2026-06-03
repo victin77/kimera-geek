@@ -112,14 +112,35 @@ export function ProductCard({ product }: { product: Product }) {
           )}
         </div>
 
+        {typeof product.stock === 'number' && (
+          <p
+            className={`mt-1.5 text-xs font-bold ${
+              product.stock === 0
+                ? 'text-kimera-red'
+                : product.stock <= 5
+                  ? 'text-kimera-orange'
+                  : 'text-kimera-ink/50'
+            }`}
+          >
+            {product.stock === 0
+              ? 'Esgotado'
+              : product.stock <= 5
+                ? `Últimas ${product.stock} unidades!`
+                : `${product.stock} em estoque`}
+          </p>
+        )}
+
         <button
           type="button"
           onClick={handleAdd}
-          className={`btn-comic mt-4 w-full text-sm transition-colors ${
+          disabled={product.stock === 0}
+          className={`btn-comic mt-3 w-full text-sm transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${
             added ? 'bg-kimera-purple text-white' : 'bg-kimera-yellow text-kimera-ink'
           }`}
         >
-          {added ? (
+          {product.stock === 0 ? (
+            'Esgotado'
+          ) : added ? (
             <>
               <Check size={18} />
               Adicionado!

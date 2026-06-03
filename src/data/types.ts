@@ -27,6 +27,8 @@ export interface Product {
   image?: string
   /** todas as fotos do produto (vindas da API), para o carrossel na página do produto */
   images?: string[]
+  /** quantidade em estoque (vinda da API) */
+  stock?: number
   /** destaque na home */
   featured?: boolean
 }
