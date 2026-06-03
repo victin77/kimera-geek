@@ -11,13 +11,8 @@ export function Footer() {
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
           {/* marca */}
           <div>
-            <a href="#inicio" className="flex items-center gap-2">
-              <span className="grid h-9 w-9 place-items-center rounded-lg border-[3px] border-kimera-cream bg-kimera-orange font-display text-xl text-kimera-ink">
-                K
-              </span>
-              <span className="font-display text-2xl tracking-wide">
-                KIMERA<span className="text-kimera-orange"> GEEK</span>
-              </span>
+            <a href="#inicio" className="-mt-4 inline-flex items-center lg:-mt-6" aria-label="Kimera Geek — ir para o início">
+              <img src="/logo-footer.png" alt="Kimera Geek" className="h-24 w-auto lg:h-28" />
             </a>
             <p className="mt-4 max-w-xs text-sm font-medium text-kimera-cream/65">
               Loja geek com produtos únicos, presentes criativos e atendimento
