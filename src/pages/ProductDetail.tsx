@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { motion } from 'framer-motion'
 import {
   ArrowLeft,
   Heart,
@@ -98,10 +97,7 @@ export function ProductDetail({ id }: { id: string }) {
 
         <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
           {/* imagem */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
+          <div
             className="relative aspect-square overflow-hidden rounded-3xl border-[3px] border-kimera-ink shadow-comic-lg"
             style={{ backgroundColor: `${product.accent}22` }}
           >
@@ -116,15 +112,10 @@ export function ProductDetail({ id }: { id: string }) {
                 {product.badge}
               </span>
             )}
-          </motion.div>
+          </div>
 
           {/* infos */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.1 }}
-            className="flex flex-col"
-          >
+          <div className="flex flex-col">
             <span className="text-sm font-bold uppercase tracking-wide text-kimera-purple">
               {product.category}
             </span>
@@ -211,7 +202,7 @@ export function ProductDetail({ id }: { id: string }) {
               <Benefit icon={ShieldCheck} text="Compra segura e atendimento próximo" />
               <Benefit icon={MapPin} text={`Retirada/entrega em ${STORE.city}`} />
             </div>
-          </motion.div>
+          </div>
         </div>
 
         {/* relacionados */}
@@ -238,9 +229,9 @@ export function ProductDetail({ id }: { id: string }) {
 
 function Benefit({ icon: Icon, text }: { icon: typeof ShieldCheck; text: string }) {
   return (
-    <div className="flex items-center gap-2 rounded-xl border-2 border-kimera-ink/15 bg-white px-3 py-2.5">
+    <div className="flex items-center gap-2 rounded-xl border-2 border-kimera-ink bg-white px-3 py-2.5 shadow-comic-sm">
       <Icon size={18} className="shrink-0 text-kimera-orange" strokeWidth={2.5} />
-      <span className="text-sm font-semibold text-kimera-ink/75">{text}</span>
+      <span className="text-sm font-semibold text-kimera-ink">{text}</span>
     </div>
   )
 }

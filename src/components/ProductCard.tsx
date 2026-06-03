@@ -63,7 +63,7 @@ export function ProductCard({ product }: { product: Product }) {
 
         {product.badge && (
           <span
-            className={`comic-tag absolute left-3 top-3 animate-pulse-tag ${badgeStyles[product.badge]}`}
+            className={`absolute left-2 top-2 max-w-[70%] truncate rounded-md border-2 border-kimera-ink px-1.5 py-0.5 text-[9px] font-extrabold uppercase leading-tight tracking-wide shadow-comic-sm sm:text-[10px] ${badgeStyles[product.badge]}`}
           >
             {product.badge}
           </span>
@@ -101,12 +101,12 @@ export function ProductCard({ product }: { product: Product }) {
           {product.name}
         </h3>
 
-        <div className="mt-3 flex items-end gap-2">
+        <div className="mt-3 flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
           <span className="text-xl font-black text-kimera-ink">
             {formatPrice(product.price)}
           </span>
           {product.oldPrice && (
-            <span className="mb-0.5 text-sm font-semibold text-kimera-ink/40 line-through">
+            <span className="text-sm font-semibold text-neutral-400 line-through">
               {formatPrice(product.oldPrice)}
             </span>
           )}

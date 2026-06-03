@@ -17,7 +17,6 @@ export function WhatsAppFab() {
       whileTap={{ scale: 0.92 }}
       className="fixed bottom-5 right-5 z-50 grid h-14 w-14 place-items-center rounded-full border-[3px] border-kimera-ink bg-[#25D366] text-white shadow-comic-lg"
     >
-      <span className="absolute inset-0 animate-ping rounded-full bg-[#25D366]/40" />
       <MessageCircle size={26} className="relative fill-white" />
     </motion.a>
   )
