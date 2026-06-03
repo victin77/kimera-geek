@@ -33,7 +33,7 @@ export function PromoBanner() {
                 e quadrinhos.
               </p>
               <WhatsAppButton
-                message="Olá! Quero ideias de presente geek. Pode me ajudar? 🎁"
+                message="Olá! Quero ideias de presente geek. Pode me ajudar?"
                 className="mt-8 bg-kimera-orange text-kimera-ink"
                 icon={<Zap size={18} className="fill-current" />}
                 iconPosition="right"

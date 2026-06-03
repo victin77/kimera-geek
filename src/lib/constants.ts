@@ -17,7 +17,7 @@ export const STORE = {
   // WhatsApp (66) 99246-0484 — formato internacional, sem máscara
   whatsappNumber: '5566992460484',
   whatsappMessage:
-    'Olá, Kimera Geek! Vim pelo site e quero saber mais sobre os produtos. 🚀',
+    'Olá, Kimera Geek! Vim pelo site e quero saber mais sobre os produtos.',
   instagram: 'https://instagram.com/kimerageek',
   instagramHandle: '@kimerageek',
   // resumo curto dos horários

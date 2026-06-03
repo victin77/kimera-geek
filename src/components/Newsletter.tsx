@@ -11,7 +11,7 @@ export function Newsletter() {
     e.preventDefault()
     if (!email) return
     // Abre o WhatsApp da loja com o e-mail já preenchido — a Kimera salva o contato.
-    const msg = `Olá, Kimera Geek! 🚀 Quero receber as novidades e promoções. Meu e-mail para a newsletter é: ${email}`
+    const msg = `Olá, Kimera Geek! Quero receber as novidades e promoções. Meu e-mail para a newsletter é: ${email}`
     window.open(whatsappLink(msg), '_blank', 'noopener,noreferrer')
     setSent(true)
     setEmail('')
