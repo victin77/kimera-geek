@@ -20,6 +20,8 @@ export const STORE = {
     'Olá, Kimera Geek! Vim pelo site e quero saber mais sobre os produtos.',
   instagram: 'https://instagram.com/kimerageek',
   instagramHandle: '@kimerageek',
+  // e-mail de contato (provisório: e-mail de teste do Victor)
+  email: 'victorcbgs@gmail.com',
   // resumo curto dos horários
   hours: 'Seg a Sex: 8h30–18h · Sáb: 8h30–12h',
   // horários detalhados por dia
@@ -33,6 +35,14 @@ export const STORE = {
 /** Monta o link wa.me com mensagem pré-preenchida. */
 export function whatsappLink(message: string = STORE.whatsappMessage): string {
   return `https://wa.me/${STORE.whatsappNumber}?text=${encodeURIComponent(message)}`
+}
+
+/** Monta um link mailto com assunto e corpo pré-preenchidos. */
+export function mailtoLink(
+  subject = 'Contato pelo site — Kimera Geek',
+  body = 'Olá, Kimera Geek! Vim pelo site e quero saber mais sobre os produtos.',
+): string {
+  return `mailto:${STORE.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
 }
 
 export const NAV_LINKS = [

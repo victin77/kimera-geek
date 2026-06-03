@@ -1,5 +1,5 @@
-import { Instagram, MessageCircle, MapPin, Clock, Heart } from 'lucide-react'
-import { NAV_LINKS, STORE, whatsappLink } from '../lib/constants'
+import { Instagram, MessageCircle, MapPin, Clock, Heart, Mail } from 'lucide-react'
+import { NAV_LINKS, STORE, whatsappLink, mailtoLink } from '../lib/constants'
 import { useData } from '../context/DataContext'
 
 export function Footer() {
@@ -41,6 +41,13 @@ export function Footer() {
                 className="grid h-10 w-10 place-items-center rounded-lg border-2 border-kimera-cream/30 transition-colors hover:bg-kimera-orange hover:text-kimera-ink"
               >
                 <MessageCircle size={18} />
+              </a>
+              <a
+                href={mailtoLink()}
+                aria-label="E-mail"
+                className="grid h-10 w-10 place-items-center rounded-lg border-2 border-kimera-cream/30 transition-colors hover:bg-kimera-orange hover:text-kimera-ink"
+              >
+                <Mail size={18} />
               </a>
             </div>
           </div>
@@ -106,6 +113,12 @@ export function Footer() {
                 <Instagram size={18} className="mt-0.5 shrink-0 text-kimera-orange" />
                 <a href={STORE.instagram} target="_blank" rel="noopener noreferrer" className="hover:text-kimera-orange">
                   {STORE.instagramHandle}
+                </a>
+              </li>
+              <li className="flex items-start gap-2">
+                <Mail size={18} className="mt-0.5 shrink-0 text-kimera-orange" />
+                <a href={mailtoLink()} className="break-all hover:text-kimera-orange">
+                  {STORE.email}
                 </a>
               </li>
             </ul>
