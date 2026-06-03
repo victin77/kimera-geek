@@ -65,7 +65,11 @@ export function CartDrawer({ open, onClose }: { open: boolean; onClose: () => vo
                 className="grid h-16 w-16 shrink-0 place-items-center overflow-hidden rounded-lg border-2 border-kimera-ink"
                 style={{ backgroundColor: `${product!.accent}22` }}
               >
-                <ProductArt kind={product!.art} accent={product!.accent} className="h-full w-full" />
+                {product!.image ? (
+                  <img src={product!.image} alt={product!.name} className="h-full w-full object-cover" />
+                ) : (
+                  <ProductArt kind={product!.art} accent={product!.accent} className="h-full w-full" />
+                )}
               </div>
 
               <div className="flex flex-1 flex-col">
