@@ -17,6 +17,7 @@ import { Catalog } from './pages/Catalog'
 import { ProductDetail } from './pages/ProductDetail'
 import { NotFound } from './pages/NotFound'
 import { StoreProvider } from './context/StoreContext'
+import { FlyToCartProvider } from './context/FlyToCartContext'
 import { DataProvider } from './context/DataContext'
 import { ScrollTopButton } from './components/ScrollTopButton'
 import { RouterProvider, useRouter } from './router'
@@ -71,8 +72,10 @@ export default function App() {
     <RouterProvider>
       <DataProvider>
         <StoreProvider>
-          <Routes />
-          <ScrollTopButton />
+          <FlyToCartProvider>
+            <Routes />
+            <ScrollTopButton />
+          </FlyToCartProvider>
         </StoreProvider>
       </DataProvider>
     </RouterProvider>

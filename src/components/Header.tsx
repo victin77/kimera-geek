@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Search, Heart, ShoppingBag, MessageCircle } from 'lucide-react'
 import { NAV_LINKS } from '../lib/constants'
 import { useStore } from '../context/StoreContext'
+import { useFlyToCart } from '../context/FlyToCartContext'
 import { useRouter } from '../router'
 import { SearchPanel } from './SearchPanel'
 import { CartDrawer } from './CartDrawer'
@@ -17,7 +18,20 @@ export function Header() {
   const [searchOpen, setSearchOpen] = useState(false)
   const [drawer, setDrawer] = useState<Drawer>(null)
   const { favoriteCount, cartCount } = useStore()
+  const { registerTarget } = useFlyToCart()
+  const cartBtnRef = useRef<HTMLButtonElement>(null)
+  const favBtnRef = useRef<HTMLButtonElement>(null)
   const { navigate, path } = useRouter()
+
+  // registra os ícones como destinos das animações de "voo"
+  useEffect(() => {
+    registerTarget('cart', cartBtnRef.current)
+    registerTarget('fav', favBtnRef.current)
+    return () => {
+      registerTarget('cart', null)
+      registerTarget('fav', null)
+    }
+  }, [registerTarget])
 
   // clica num link do menu: se não estiver na home, volta pra home e rola até a seção
   const handleNavClick = (e: React.MouseEvent, href: string) => {
@@ -103,10 +117,20 @@ export function Header() {
           <IconButton label="Buscar" onClick={toggleSearch} active={searchOpen}>
             <Search size={18} />
           </IconButton>
-          <IconButton label="Favoritos" onClick={() => setDrawer('fav')} badge={favoriteCount}>
+          <IconButton
+            label="Favoritos"
+            onClick={() => setDrawer('fav')}
+            badge={favoriteCount}
+            buttonRef={favBtnRef}
+          >
             <Heart size={18} />
           </IconButton>
-          <IconButton label="Carrinho" onClick={() => setDrawer('cart')} badge={cartCount}>
+          <IconButton
+            label="Carrinho"
+            onClick={() => setDrawer('cart')}
+            badge={cartCount}
+            buttonRef={cartBtnRef}
+          >
             <ShoppingBag size={18} />
           </IconButton>
 
@@ -197,15 +221,18 @@ function IconButton({
   onClick,
   badge,
   active,
+  buttonRef,
 }: {
   children: React.ReactNode
   label: string
   onClick?: () => void
   badge?: number
   active?: boolean
+  buttonRef?: React.Ref<HTMLButtonElement>
 }) {
   return (
     <button
+      ref={buttonRef}
       type="button"
       aria-label={label}
       onClick={onClick}

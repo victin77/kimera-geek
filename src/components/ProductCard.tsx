@@ -1,10 +1,11 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Heart, ShoppingBag, Check } from 'lucide-react'
 import type { Product, ProductBadge } from '../data/types'
 import { formatPrice } from '../data/products'
 import { ProductArt } from './ProductArt'
 import { useStore } from '../context/StoreContext'
+import { useFlyToCart } from '../context/FlyToCartContext'
 import { useRouter } from '../router'
 
 const badgeStyles: Record<ProductBadge, string> = {
@@ -16,16 +17,29 @@ const badgeStyles: Record<ProductBadge, string> = {
 
 export function ProductCard({ product }: { product: Product }) {
   const { isFavorite, toggleFavorite, addToCart } = useStore()
+  const { flyTo } = useFlyToCart()
   const { navigate } = useRouter()
   const fav = isFavorite(product.id)
   const [added, setAdded] = useState(false)
+  const artRef = useRef<HTMLDivElement>(null)
 
   const openProduct = () => navigate(`/produto/${product.id}`)
 
   const handleAdd = () => {
+    const rect = artRef.current?.getBoundingClientRect()
+    if (rect) flyTo('cart', rect, { image: product.image, accent: product.accent })
     addToCart(product.id)
     setAdded(true)
     setTimeout(() => setAdded(false), 1400)
+  }
+
+  const handleFav = () => {
+    // só anima quando está ADICIONANDO aos favoritos (não ao remover)
+    if (!fav) {
+      const rect = artRef.current?.getBoundingClientRect()
+      if (rect) flyTo('fav', rect, { image: product.image, accent: product.accent })
+    }
+    toggleFavorite(product.id)
   }
 
   return (
@@ -40,6 +54,7 @@ export function ProductCard({ product }: { product: Product }) {
     >
       {/* topo: arte + etiqueta + favorito */}
       <div
+        ref={artRef}
         onClick={openProduct}
         role="link"
         aria-label={`Ver ${product.name}`}
@@ -73,7 +88,7 @@ export function ProductCard({ product }: { product: Product }) {
           type="button"
           onClick={(e) => {
             e.stopPropagation()
-            toggleFavorite(product.id)
+            handleFav()
           }}
           aria-label={fav ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}
           aria-pressed={fav}

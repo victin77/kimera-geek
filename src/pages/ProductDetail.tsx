@@ -19,6 +19,7 @@ import { ProductArt } from '../components/ProductArt'
 import { ProductCard } from '../components/ProductCard'
 import { formatPrice } from '../data/products'
 import { useStore } from '../context/StoreContext'
+import { useFlyToCart } from '../context/FlyToCartContext'
 import { useData } from '../context/DataContext'
 import { useRouter } from '../router'
 import { whatsappLink, STORE } from '../lib/constants'
@@ -39,12 +40,14 @@ function describe(p: Product): string {
 export function ProductDetail({ id }: { id: string }) {
   const { navigate } = useRouter()
   const { addToCart, toggleFavorite, isFavorite } = useStore()
+  const { flyTo } = useFlyToCart()
   const { products, getProductById, loading } = useData()
   const product = getProductById(id)
   const [qty, setQty] = useState(1)
   const [added, setAdded] = useState(false)
   const [activeImg, setActiveImg] = useState(0)
   const trackRef = useRef<HTMLDivElement>(null)
+  const imgBoxRef = useRef<HTMLDivElement>(null)
 
   // ainda carregando os produtos da API: evita "não encontrado" prematuro
   if (!product && loading) {
@@ -92,9 +95,19 @@ export function ProductDetail({ id }: { id: string }) {
   }
 
   const handleAdd = () => {
+    const rect = imgBoxRef.current?.getBoundingClientRect()
+    if (rect) flyTo('cart', rect, { image: gallery[activeImg] ?? product.image, accent: product.accent })
     addToCart(product.id, qty)
     setAdded(true)
     setTimeout(() => setAdded(false), 1600)
+  }
+
+  const handleFav = () => {
+    if (!fav) {
+      const rect = imgBoxRef.current?.getBoundingClientRect()
+      if (rect) flyTo('fav', rect, { image: gallery[activeImg] ?? product.image, accent: product.accent })
+    }
+    toggleFavorite(product.id)
   }
 
   return (
@@ -116,6 +129,7 @@ export function ProductDetail({ id }: { id: string }) {
           {/* imagem / carrossel */}
           <div>
             <div
+              ref={imgBoxRef}
               className="relative aspect-square overflow-hidden rounded-3xl border-[3px] border-kimera-ink shadow-comic-lg"
               style={{ backgroundColor: `${product.accent}22` }}
             >
@@ -273,7 +287,7 @@ export function ProductDetail({ id }: { id: string }) {
 
               <button
                 type="button"
-                onClick={() => toggleFavorite(product.id)}
+                onClick={handleFav}
                 aria-label={fav ? 'Remover dos favoritos' : 'Favoritar'}
                 className="grid h-12 w-12 shrink-0 place-items-center rounded-xl border-[3px] border-kimera-ink bg-white shadow-comic-sm transition-transform active:scale-90"
               >
